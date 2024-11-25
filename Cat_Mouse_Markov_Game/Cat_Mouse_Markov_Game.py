@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from matplotlib.gridspec import GridSpec
 
-# --- Spielfeld-Konstanten ---
+# --- Constants ---
 GRID_SIZE = 11
 NUM_TRAIN_EPISODES = 1001
 NUM_EVAL_EPISODES = 1001
@@ -473,12 +473,10 @@ def animate(frame):
 
             cat_pos, mouse_pos, cheese_positions = path[step_idx]
 
-            # Update Game Field
             cat_scatter.set_offsets([cat_pos])
             mouse_scatter.set_offsets([mouse_pos])
             cheese_scatter.set_offsets(cheese_positions)
 
-            # Dynamically update the title
             episode_number = episode_idx * step_size
             ax_field.set_title(
                 f"Cat-Mouse Simulation - Episode {episode_number}/{NUM_TRAIN_EPISODES - 1}",
