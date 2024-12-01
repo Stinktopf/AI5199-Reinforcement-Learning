@@ -11,7 +11,6 @@ from matplotlib.gridspec import GridSpec
 # --- Constants ---
 GRID_SIZE = 11
 NUM_TRAIN_EPISODES = 1001
-NUM_EVAL_EPISODES = 1001
 
 
 # --- Q-Learning-Agent ---
@@ -61,7 +60,6 @@ class QLearningAgent:
             np.argmax([self.q_table.get((state, action)) for action in self.actions])
         ]
 
-    # TODO Look if equation is correct
     def update_q(self, state, action, reward, next_state):
         """
         Adjusts the Q-value using the learning rate alpha, the received reward, the discount factor gamma, and the maximum future Q-value.
@@ -236,56 +234,6 @@ class CatMouseGame:
 
         return success_count, path
 
-    def evaluate(self):
-        """Evaluate the agents based on the final q-table."""
-        cat_successes = 0
-        mouse_successes = 0
-        # // -> Floor division
-        max_successes = NUM_EVAL_EPISODES // 2
-
-        for _ in range(NUM_EVAL_EPISODES):
-            self.initialize_positions()
-            cat_pos = self.cat.pos
-            mouse_pos = self.mouse.pos
-
-            for _ in range(self.cat.max_steps):
-                cat_action = self.cat.choose_action(cat_pos)
-                mouse_action = self.mouse.choose_action(mouse_pos)
-
-                next_cat_pos, _ = self.cat.move(cat_action)
-                next_mouse_pos, _ = self.mouse.move(mouse_action)
-
-                # Mouse reached goal (cheese)
-                if next_mouse_pos in self.cheese_positions:
-                    mouse_successes = min(mouse_successes + 1, max_successes)
-                    break
-
-                # Cat catches mouse by direct overlap and position switch
-                if (next_cat_pos == next_mouse_pos) or (
-                    next_cat_pos == mouse_pos and next_mouse_pos == cat_pos
-                ):
-                    cat_successes = min(cat_successes + 1, max_successes)
-                    break
-
-                cat_pos, mouse_pos = next_cat_pos, next_mouse_pos
-
-        return cat_successes + mouse_successes
-
-
-# --- Ray Tune Training ---
-def train_cat_mouse(config):
-    game = CatMouseGame(config)
-    total_successes = 0
-    for _ in range(NUM_TRAIN_EPISODES):
-        success_count, _ = game.train_episode()
-        total_successes += success_count
-
-    eval_successes = game.evaluate()
-
-    session.report(
-        {"training_successes": total_successes, "eval_successes": eval_successes}
-    )
-
 
 # --- Ray Tune ---
 ray.init(_temp_dir="C:/ray_temp", ignore_reinit_error=True)
@@ -320,11 +268,22 @@ search_space = {
     ),
 }
 
+
+def train_cat_mouse(config):
+    game = CatMouseGame(config)
+    total_successes = 0
+    for _ in range(NUM_TRAIN_EPISODES):
+        success_count, _ = game.train_episode()
+        total_successes += success_count
+
+    session.report({"training_successes": total_successes})
+
+
 search_alg = OptunaSearch()
 analysis = tune.run(
     train_cat_mouse,
     config=search_space,
-    metric="eval_successes",
+    metric="training_successes",
     mode="max",
     num_samples=20,
     trial_dirname_creator=trial_dirname_creator,
