@@ -279,7 +279,7 @@ def train_cat_mouse(config):
 
     cat_successes = 0
     mouse_successes = 0
-    
+
     for _ in range(NUM_TRAIN_EPISODES):
         cat_successes_inner, mouse_successes_inner, _ = game.train_episode()
         cat_successes = min(cat_successes + cat_successes_inner, max_successes)
