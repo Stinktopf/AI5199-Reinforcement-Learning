@@ -134,11 +134,13 @@ class CatMouseGame:
         Train one episode with the fixed starting positions and return if the episode was a success and the path the agents took.
         """
 
+        cat_successes = 0
+        mouse_successes = 0
+
         self.initialize_positions()
         cat_pos = self.cat.pos
         mouse_pos = self.mouse.pos
         path = [(cat_pos, mouse_pos, self.cheese_positions)]
-        success_count = 0
 
         # Iterate over steps until max_steps or success was achieved
         for _ in range(self.cat.max_steps):
@@ -198,7 +200,7 @@ class CatMouseGame:
             # Mouse reached goal (cheese) -> Reward agent and update
             if next_mouse_pos in self.cheese_positions:
                 total_mouse_reward += self.mouse.rewards.get("cheese_reward")
-                success_count += 1
+                mouse_successes = 1
                 abort_episode = True
             elif (next_cat_pos == next_mouse_pos) or (
                 next_cat_pos == mouse_pos and next_mouse_pos == cat_pos
@@ -206,7 +208,7 @@ class CatMouseGame:
                 # Cat catches mouse by direct overlap and position switch -> Reward and penalize
                 total_cat_reward += self.cat.rewards.get("catch_reward")
                 total_mouse_reward += self.mouse.rewards.get("catch_penalty")
-                success_count += 1
+                cat_successes = 1
                 abort_episode = True
 
             # Update q-values
@@ -232,7 +234,7 @@ class CatMouseGame:
             self.mouse.epsilon_min, self.mouse.epsilon * self.mouse.epsilon_decay
         )
 
-        return success_count, path
+        return cat_successes, mouse_successes, path
 
 
 # --- Ray Tune ---
@@ -271,19 +273,26 @@ search_space = {
 
 def train_cat_mouse(config):
     game = CatMouseGame(config)
-    total_successes = 0
-    for _ in range(NUM_TRAIN_EPISODES):
-        success_count, _ = game.train_episode()
-        total_successes += success_count
 
-    session.report({"training_successes": total_successes})
+    # // -> Floor division
+    max_successes = NUM_TRAIN_EPISODES // 2
+
+    cat_successes = 0
+    mouse_successes = 0
+    
+    for _ in range(NUM_TRAIN_EPISODES):
+        cat_successes_inner, mouse_successes_inner, _ = game.train_episode()
+        cat_successes = min(cat_successes + cat_successes_inner, max_successes)
+        mouse_successes = min(mouse_successes + mouse_successes_inner, max_successes)
+
+    session.report({"successes": cat_successes + mouse_successes})
 
 
 search_alg = OptunaSearch()
 analysis = tune.run(
     train_cat_mouse,
     config=search_space,
-    metric="training_successes",
+    metric="successes",
     mode="max",
     num_samples=20,
     trial_dirname_creator=trial_dirname_creator,
@@ -300,27 +309,22 @@ game = CatMouseGame(best_config)
 print("Training the game with the best configuration...")
 
 all_paths = []
-total_success_count = 0
 cat_wins = []
 mouse_wins = []
 
+cat_successes = 0
+mouse_successes = 0
+
 for _ in range(NUM_TRAIN_EPISODES):
-    success_count, path = game.train_episode()
-    total_success_count += success_count
+    cat_successes_inner, mouse_successes_inner, path = game.train_episode()
     all_paths.append(path)
 
-    # Determine wins in the current episode
-    if path[-1][0] == path[-1][1]:
-        cat_wins.append(1)
-        mouse_wins.append(0)
-    elif path[-1][1] in path[-1][2]:
-        cat_wins.append(0)
-        mouse_wins.append(1)
-    else:
-        cat_wins.append(0)
-        mouse_wins.append(0)
+    cat_wins.append(cat_successes_inner)
+    mouse_wins.append(mouse_successes_inner)
+    cat_successes += cat_successes_inner
+    mouse_successes += mouse_successes_inner
 
-print(f"Total Successful Episodes: {total_success_count}")
+print(f"Total Successful Episodes: {cat_successes + mouse_successes}")
 
 # Select every n-th episode for animation
 n = 100
