@@ -116,9 +116,20 @@ class CatMouseGame:
 
     def initialize_positions(self):
         """Initialize starting positions of agents and pieces of cheese."""
-        self.mouse.reset(fixed_position=(5, 0))
-        self.cat.reset(fixed_position=(5, 10))
+        all_positions = [
+            (x, y) for x in range(self.grid_size) for y in range(self.grid_size)
+        ]
+
         self.cheese_positions = [(0, 10), (10, 10)]
+
+        available_positions = [
+            pos for pos in all_positions if pos not in self.cheese_positions
+        ]
+
+        mouse_pos, cat_pos = random.sample(available_positions, 2)
+
+        self.mouse.reset(fixed_position=mouse_pos)
+        self.cat.reset(fixed_position=cat_pos)
 
     @staticmethod
     def manhattan_dist(pos1, pos2):
@@ -254,8 +265,8 @@ search_space = {
     "max_steps": tune.randint(25, 100),
     "cat_rewards": tune.sample_from(
         lambda _: {
-            "catch_reward": random.uniform(50, 100),
-            "distance_reward": random.uniform(25, 50),
+            "catch_reward": random.uniform(50, 200),
+            "distance_reward": random.uniform(25, 100),
             "out_of_bounds_penalty": random.uniform(-10, -1),
         }
     ),
@@ -295,6 +306,7 @@ analysis = tune.run(
     metric="successes",
     mode="max",
     num_samples=20,
+    search_alg=search_alg,
     trial_dirname_creator=trial_dirname_creator,
 )
 
