@@ -1,24 +1,52 @@
-# Cat Mouse Markov Game
+<p align="center">
+  <img src="assets/thumbnail.webp" width="400x" />
+</p>
 
-This repository contains a simple Markov game where a cat tries to catch a mouse, and the mouse aims to reach two pieces of cheese. The code implements the Q-learning algorithm and includes hyperparameter optimization using Ray Tune.
+# Cat-Mouse Markov Game
 
-## Usage
+A grid-based reinforcement learning markov game where a **cat** chases a **mouse**, while the mouse aims to reach **cheese**. The game uses **Q-learning** for agent strategy development, balancing exploration and exploitation, and is optimized using **Ray Tune**.
 
-Install dependencies:
+## Game Mechanics
 
-```py
-pip install -r requirements.txt
-```
+### Environment
+- **Grid Size**: 11x11 grid.
+- **Agents**:
+  - **Cat**: Attempts to catch the mouse. Is randomly repositioned each episode.
+  - **Mouse**: Aims to collect cheese while avoiding the cat. Is randomly repositioned each episode.
+- **Cheese**: Fixed at `(0, 10)` and `(10, 10)`.
 
-Adjust the absolute Ray Tune path to your needs:
-```py
-ray.init(_temp_dir="C:/ray_temp", ignore_reinit_error=True)
-```
+### Agents
+- **Q-Learning** is used for both agents with reward-based strategies:
+  - **Cat**:
+    - Rewards for catching the mouse.
+    - Penalties for invalid moves.
+  - **Mouse**:
+    - Rewards for reaching cheese and avoiding the cat.
+    - Penalties for being caught.
 
-Execute:
+## Balancing
+The reward structure is designed to achieve a **50/50 win rate** over time, ensuring both agents have equal chances of success.
 
-```py
-python Cat_Mouse_Markov_Game.py
-```
-
+## Execution
+1. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Update Ray Tune temp directory if needed:
+   ```python
+   ray.init(_temp_dir="C:/ray_temp", ignore_reinit_error=True)
+   ```
+3. Run the game:
+   ```bash
+   python Cat_Mouse_Markov_Game.py
+   ```
 Or open the Jupyter Notebook.
+
+## Demo Video
+
+<p align="center">
+    <video width="600" controls>
+    <source src="assets/showcase.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+  </video>
+</p>
