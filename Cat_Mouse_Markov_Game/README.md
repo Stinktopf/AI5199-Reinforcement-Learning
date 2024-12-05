@@ -46,7 +46,7 @@ Or open the Jupyter Notebook.
 
 <p align="center">
     <video width="600" controls>
-    <source src="assets/showcase.mp4" type="video/mp4">
+    <source src="https://rawcdn.githack.com/Stinktopf/AI5199-Reinforcement-Learning/refs/heads/main/Cat_Mouse_Markov_Game/assets/showcase.mp4" type="video/mp4">
   Your browser does not support the video tag.
   </video>
 </p>
