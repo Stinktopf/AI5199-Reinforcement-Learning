@@ -25,7 +25,7 @@ The projects within this repository were developed by the following team members
 - **Algorithm**: Policy-Grading  
 - **Date**: *TBA*  
 - **Link**: *TBA*
-<img src="assets/tba.png" alt="Missing Image">
+<img src="assets/TBA.png" alt="Missing Image">
 
 ---
 
