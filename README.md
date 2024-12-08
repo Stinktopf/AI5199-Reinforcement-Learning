@@ -16,7 +16,7 @@ The projects within this repository were developed by the following team members
 - **Description**: A grid-based RL game where a cat chases a mouse, and the mouse aims to reach cheese. Uses Q-learning for strategy optimization, enhanced with Ray Tune.
 - **Algorithm**: Q-Learning  
 - **Date**: December 9, 2024  
-- **Link**: [./Cat_Mouse_Markov_Game](./Cat_Mouse_Markov_Game)
+- **Link**: [Cat_Mouse_Markov_Game](./Cat_Mouse_Markov_Game)
 <img src="Cat_Mouse_Markov_Game/assets/thumbnail.webp" alt="Cat vs Mouse">
 
 ### *TBA*
@@ -25,7 +25,7 @@ The projects within this repository were developed by the following team members
 - **Algorithm**: Policy-Grading  
 - **Date**: *TBA*  
 - **Link**: *TBA*
-<img src="https://riskinfo.com.au/resource-centre/files/2019/11/test-img.jpg" alt="Missing Image">
+<img src="assets/tba.png" alt="Missing Image">
 
 ---
 
