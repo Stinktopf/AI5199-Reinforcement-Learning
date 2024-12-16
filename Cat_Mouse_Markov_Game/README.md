@@ -47,3 +47,8 @@ Or open the Jupyter Notebook.
 <p align="center">
   <img src="assets/showcase.gif" width="600x" />
 </p>
+
+## Notes
+<p align="center">
+  <img src="assets/notes.png" width="600x" />
+</p>
