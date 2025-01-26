@@ -19,9 +19,9 @@ The projects within this repository were developed by the following team members
 - **Link**: [Cat Mouse Markov Game](./Cat_Mouse_Markov_Game)
 <img src="Cat_Mouse_Markov_Game/assets/thumbnail.webp" alt="Cat vs Mouse">
 
-### *Super Hexagon Agent*
+### Super Hexagon Agent
 
-- **Description**: *An agent trained to play *Super Hexagon* by leveraging Policy Gradient methods for decision-making and continuous action optimization. This project integrates OpenGL hooks and memory injection to interface directly with the game and extract relevant states for reinforcement learning.*
+- **Description**: An agent trained to play *Super Hexagon* by leveraging Policy Gradient methods for decision-making and continuous action optimization. This project integrates OpenGL hooks and memory injection to interface directly with the game and extract relevant states for reinforcement learning.
 - **Algorithm**: Policy-Grading  
 - **Date**: *TBA*  
 - **Link**: [Super Hexagon Agent](./Super_Hexagon_Agent)
