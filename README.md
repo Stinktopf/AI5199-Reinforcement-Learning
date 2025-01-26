@@ -25,4 +25,4 @@ The projects within this repository were developed by the following team members
 - **Algorithm**: Policy-Grading  
 - **Date**: *TBA*  
 - **Link**: [Super Hexagon Agent](./Super_Hexagon_Agent)
-  <img src="Super_Hexagon_agent/assets/thumbnail.jpg" alt="Super Hexagon">
+  <img src="Super_Hexagon_Agent/assets/thumbnail.jpg" alt="Super Hexagon">
