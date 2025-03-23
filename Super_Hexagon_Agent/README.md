@@ -33,7 +33,5 @@ An agent trained to play *Super Hexagon* by leveraging Policy Gradient methods f
     - Access the game's memory and extract specific state information, including player and obstacle positions.
     - Write values to memory (only for setup reasons, like level selection and player input).
 
-## Algorithm: Proximal Policy Optimization (PPO)
-
 ## Documentation
 The documentation for the implementation can be access on the following site: [https://stinktopf.github.io/SuperHexagonAI/](https://stinktopf.github.io/SuperHexagonAI/)
