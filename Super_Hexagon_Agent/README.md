@@ -2,8 +2,6 @@
   <img src="assets/thumbnail.jpg" width="400x" />
 </p>
 
-# *WIP* #
-
 # Super Hexagon Agent
 
 An agent trained to play *Super Hexagon* by leveraging Policy Gradient methods for decision-making and continuous action optimization. This project integrates OpenGL hooks and memory injection to interface directly with the game and extract relevant states for reinforcement learning.
@@ -36,3 +34,6 @@ An agent trained to play *Super Hexagon* by leveraging Policy Gradient methods f
     - Write values to memory (only for setup reasons, like level selection and player input).
 
 ## Algorithm: Proximal Policy Optimization (PPO)
+
+## Documentation
+The documentation for the implementation can be access on the following site: [https://stinktopf.github.io/SuperHexagonAI/](https://stinktopf.github.io/SuperHexagonAI/)
